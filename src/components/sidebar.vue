@@ -1,15 +1,7 @@
 <template>
 	<div class="sidebar">
-		<el-menu
-			class="sidebar-el-menu"
-			:default-active="onRoutes"
-			:collapse="sidebar.collapse"
-			background-color="#324157"
-			text-color="#bfcbd9"
-			active-text-color="#20a0ff"
-			unique-opened
-			router
-		>
+		<el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="sidebar.collapse"
+			background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
 			<template v-for="item in items">
 				<template v-if="item.subs">
 					<el-sub-menu :index="item.index" :key="item.index" v-permiss="item.permiss">
@@ -20,18 +12,7 @@
 							<span>{{ item.title }}</span>
 						</template>
 						<template v-for="subItem in item.subs">
-							<el-sub-menu
-								v-if="subItem.subs"
-								:index="subItem.index"
-								:key="subItem.index"
-								v-permiss="item.permiss"
-							>
-								<template #title>{{ subItem.title }}</template>
-								<el-menu-item v-for="(threeItem, i) in subItem.subs" :key="i" :index="threeItem.index">
-									{{ threeItem.title }}
-								</el-menu-item>
-							</el-sub-menu>
-							<el-menu-item v-else :index="subItem.index" v-permiss="item.permiss">
+							<el-menu-item :index="subItem.index" v-permiss="item.permiss">
 								{{ subItem.title }}
 							</el-menu-item>
 						</template>
@@ -59,79 +40,104 @@ const items = [
 	{
 		icon: 'Odometer',
 		index: '/dashboard',
-		title: '系统首页',
+		title: 'ホームページ',
 		permiss: '1'
 	},
 	{
-		icon: 'Calendar',
-		index: '/table',
-		title: '基础表格',
-		permiss: '2'
-	},
-	{
 		icon: 'DocumentCopy',
-		index: '/tabs',
-		title: 'tab选项卡',
-		permiss: '3'
-	},
-	{
-		icon: 'Edit',
-		index: '3',
-		title: '表单相关',
-		permiss: '4',
+		index: '',
+		title: '業務管理',
+		permiss: '2',
 		subs: [
 			{
 				index: '/form',
-				title: '基本表单',
+				title: '見積',
+				permiss: '3'
+			},
+			{
+				index: '/form',
+				title: '受注',
+				permiss: '4'
+			},
+			{
+				index: '/form',
+				title: '発注',
 				permiss: '5'
 			},
 			{
-				index: '/upload',
-				title: '文件上传',
+				index: '/form',
+				title: '仕入',
 				permiss: '6'
 			},
 			{
-				index: '4',
-				title: '三级菜单',
-				permiss: '7',
-				subs: [
-					{
-						index: '/editor',
-						title: '富文本编辑器',
-						permiss: '8'
-					},
-					{
-						index: '/markdown',
-						title: 'markdown编辑器',
-						permiss: '9'
-					}
-				]
+				index: '/form',
+				title: '売上',
+				permiss: '7'
+			},
+			{
+				index: '/form',
+				title: '請求',
+				permiss: '8'
+			},
+			{
+				index: '/form',
+				title: '支払',
+				permiss: '9'
+			},
+			{
+				index: '/form',
+				title: '承認',
+				permiss: '10'
 			}
 		]
 	},
 	{
 		icon: 'Setting',
-		index: '/icon',
-		title: '自定义图标',
-		permiss: '10'
-	},
-	{
-		icon: 'PieChart',
-		index: '/charts',
-		title: 'schart图表',
-		permiss: '11'
-	},
-	{
-		icon: 'Warning',
-		index: '/permission',
-		title: '权限管理',
-		permiss: '13'
-	},
-	{
-		icon: 'CoffeeCup',
-		index: '/donate',
-		title: '支持作者',
-		permiss: '14'
+		index: '3',
+		title: 'マスタ',
+		permiss: '11',
+		subs: [
+		{
+				index: '/form',
+				title: '税率マスタ',
+				permiss: '12'
+			},
+			{
+				index: '/form',
+				title: '分類マスタ',
+				permiss: '13'
+			},
+			{
+				index: '/form',
+				title: 'ユーザーマスタ',
+				permiss: '14'
+			},
+			{
+				index: '/form',
+				title: '請求先マスタ',
+				permiss: '15'
+			},
+			{
+				index: '/form',
+				title: '得意先マスタ',
+				permiss: '16'
+			},
+			{
+				index: '/form',
+				title: '商品マスタ',
+				permiss: '17'
+			},
+			{
+				index: '/form',
+				title: '自社マスタ',
+				permiss: '18'
+			},
+			{
+				index: '/form',
+				title: '部署マスタ',
+				permiss: '19'
+			}
+		]
 	}
 ];
 
@@ -152,13 +158,16 @@ const sidebar = useSidebarStore();
 	bottom: 0;
 	overflow-y: scroll;
 }
+
 .sidebar::-webkit-scrollbar {
 	width: 0;
 }
+
 .sidebar-el-menu:not(.el-menu--collapse) {
 	width: 250px;
 }
-.sidebar > ul {
+
+.sidebar>ul {
 	height: 100%;
 }
 </style>

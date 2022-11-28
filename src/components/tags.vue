@@ -14,15 +14,15 @@
 		<div class="tags-close-box">
 			<el-dropdown @command="handleTags">
 				<el-button size="small" type="primary">
-					标签选项
+					タグメニュー
 					<el-icon class="el-icon--right">
 						<arrow-down />
 					</el-icon>
 				</el-button>
 				<template #dropdown>
 					<el-dropdown-menu size="small">
-						<el-dropdown-item command="other">关闭其他</el-dropdown-item>
-						<el-dropdown-item command="all">关闭所有</el-dropdown-item>
+						<el-dropdown-item command="other">以外閉じる</el-dropdown-item>
+						<el-dropdown-item command="all">全部閉じる</el-dropdown-item>
 					</el-dropdown-menu>
 				</template>
 			</el-dropdown>
@@ -42,6 +42,7 @@ const isActive = (path: string) => {
 
 const tags = useTagsStore();
 // 关闭单个标签
+//タグを閉じる
 const closeTags = (index: number) => {
 	const delItem = tags.list[index];
 	tags.delTagsItem(index);
@@ -54,6 +55,7 @@ const closeTags = (index: number) => {
 };
 
 // 设置标签
+//タグの設定
 const setTags = (route: any) => {
 	const isExist = tags.list.some(item => {
 		return item.path === route.fullPath;
@@ -73,11 +75,14 @@ onBeforeRouteUpdate(to => {
 });
 
 // 关闭全部标签
+//全部のタグを閉じる
 const closeAll = () => {
 	tags.clearTags();
 	router.push('/');
 };
+
 // 关闭其他标签
+//当タグ以外全部閉じる
 const closeOther = () => {
 	const curItem = tags.list.filter(item => {
 		return item.path === route.fullPath;
@@ -87,12 +92,6 @@ const closeOther = () => {
 const handleTags = (command: string) => {
 	command === 'other' ? closeOther() : closeAll();
 };
-
-// 关闭当前页面的标签页
-// tags.closeCurrentTag({
-//     $router: router,
-//     $route: route
-// });
 </script>
 
 <style>

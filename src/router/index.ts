@@ -15,7 +15,7 @@ const routes:RouteRecordRaw[] = [
                 path: "/dashboard",
                 name: "dashboard",
                 meta: {
-                    title: '系统首页',
+                    title: 'ホームページ',
                     permiss: '1'
                 },
                 component: () => import ( /* webpackChunkName: "dashboard" */ "../views/dashboard.vue")
@@ -87,18 +87,10 @@ const routes:RouteRecordRaw[] = [
                 path: '/user',
                 name: 'user',
                 meta: {
-                    title: '个人中心'
+                    title: 'ユーザーメンテナン'
                 },
                 component: () => import (/* webpackChunkName: "user" */ '../views/user.vue')
-            }, {
-                path: '/editor',
-                name: 'editor',
-                meta: {
-                    title: '富文本编辑器',
-                    permiss: '8'
-                },
-                component: () => import (/* webpackChunkName: "editor" */ '../views/editor.vue')
-            }, {
+            },  {
                 path: '/markdown',
                 name: 'markdown',
                 meta: {
@@ -112,14 +104,14 @@ const routes:RouteRecordRaw[] = [
         path: "/login",
         name: "Login",
         meta: {
-            title: '登录'
+            title: 'ログイン'
         },
         component: () => import ( /* webpackChunkName: "login" */ "../views/login.vue")
     }, {
         path: '/403',
         name: '403',
         meta: {
-            title: '没有权限'
+            title: '権限なし'
         },
         component: () => import (/* webpackChunkName: "403" */ '../views/403.vue')
     },
@@ -138,6 +130,7 @@ router.beforeEach((to, from, next) => {
         next('/login');
     } else if (to.meta.permiss && !permiss.key.includes(to.meta.permiss)) {
         // 如果没有权限，则进入403
+        //権限がない場合は403になる
         next('/403');
     } else {
         next();

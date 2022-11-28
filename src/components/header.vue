@@ -5,23 +5,14 @@
 			<el-icon v-if="sidebar.collapse"><Expand /></el-icon>
 			<el-icon v-else><Fold /></el-icon>
 		</div>
-		<div class="logo">后台管理系统</div>
+		<div class="logo">ConsideSystem</div>
 		<div class="header-right">
 			<div class="header-user-con">
-				<!-- 消息中心 -->
-				<div class="btn-bell" @click="router.push('/tabs')">
-					<el-tooltip
-						effect="dark"
-						:content="message ? `有${message}条未读消息` : `消息中心`"
-						placement="bottom"
-					>
-						<i class="el-icon-lx-notice"></i>
-					</el-tooltip>
-					<span class="btn-bell-badge" v-if="message"></span>
-				</div>
 				<!-- 用户头像 -->
+				<!-- ユーザーアイコン -->
 				<el-avatar class="user-avator" :size="30" :src="imgurl" />
 				<!-- 用户名下拉菜单 -->
+				<!-- ユーザーメニュー -->
 				<el-dropdown class="user-name" trigger="click" @command="handleCommand">
 					<span class="el-dropdown-link">
 						{{ username }}
@@ -31,11 +22,8 @@
 					</span>
 					<template #dropdown>
 						<el-dropdown-menu>
-							<a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-								<el-dropdown-item>项目仓库</el-dropdown-item>
-							</a>
-							<el-dropdown-item command="user">个人中心</el-dropdown-item>
-							<el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
+							<el-dropdown-item command="user">ユーザーメンテナンス</el-dropdown-item>
+							<el-dropdown-item divided command="loginout">サインアウト</el-dropdown-item>
 						</el-dropdown-menu>
 					</template>
 				</el-dropdown>
@@ -50,10 +38,10 @@ import { useRouter } from 'vue-router';
 import imgurl from '../assets/img/img.jpg';
 
 const username: string | null = localStorage.getItem('ms_username');
-const message: number = 2;
 
 const sidebar = useSidebarStore();
 // 侧边栏折叠
+//左メニューの畳み
 const collapseChage = () => {
 	sidebar.handleCollapse();
 };
@@ -65,6 +53,7 @@ onMounted(() => {
 });
 
 // 用户名下拉菜单选择事件
+//ユーザーメニューのイベント
 const router = useRouter();
 const handleCommand = (command: string) => {
 	if (command == 'loginout') {
@@ -75,6 +64,7 @@ const handleCommand = (command: string) => {
 	}
 };
 </script>
+
 <style scoped>
 .header {
 	position: relative;
@@ -107,35 +97,7 @@ const handleCommand = (command: string) => {
 	height: 70px;
 	align-items: center;
 }
-.btn-fullscreen {
-	transform: rotate(45deg);
-	margin-right: 5px;
-	font-size: 24px;
-}
-.btn-bell,
-.btn-fullscreen {
-	position: relative;
-	width: 30px;
-	height: 30px;
-	text-align: center;
-	border-radius: 15px;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-}
-.btn-bell-badge {
-	position: absolute;
-	right: 4px;
-	top: 0px;
-	width: 8px;
-	height: 8px;
-	border-radius: 4px;
-	background: #f56c6c;
-	color: #fff;
-}
-.btn-bell .el-icon-lx-notice {
-	color: #fff;
-}
+
 .user-name {
 	margin-left: 10px;
 }
@@ -147,8 +109,5 @@ const handleCommand = (command: string) => {
 	cursor: pointer;
 	display: flex;
 	align-items: center;
-}
-.el-dropdown-menu__item {
-	text-align: center;
 }
 </style>
