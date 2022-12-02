@@ -46,11 +46,15 @@ const data: Tree[] = [
 		children: [
 			{
 				id: '15',
-				label: '编辑'
+				label: '編集'
 			},
 			{
 				id: '16',
-				label: '删除'
+				label: '削除'
+			},
+			{
+				id: '17',
+				label: '詳細'
 			}
 		]
 	},
