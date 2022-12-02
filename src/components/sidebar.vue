@@ -11,7 +11,7 @@
 							</el-icon>
 							<span>{{ item.title }}</span>
 						</template>
-						<template v-for="subItem in item.subs">
+						<template v-for="subItem in item.subs" :key="subItem.index">
 							<el-menu-item :index="subItem.index" v-permiss="item.permiss">
 								{{ subItem.title }}
 							</el-menu-item>
@@ -50,9 +50,9 @@ const items = [
 		permiss: '2',
 		subs: [
 			{
-				index: '/form',
+				index: '/estimate',
 				title: '見積',
-				permiss: '3'
+				permiss: '2'
 			},
 			{
 				index: '/form',
