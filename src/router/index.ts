@@ -36,13 +36,13 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import( /* webpackChunkName: "table" */ "../views/estimate_table.vue")
             }, {
-                path: "/form",
-                name: "baseform",
+                path: "/estimate_detail_table",
+                name: "estimate_detail_table",
                 meta: {
-                    title: '表单',
-                    permiss: '5'
+                    title: '見積詳細',
+                    permiss: '3'
                 },
-                component: () => import( /* webpackChunkName: "form" */ "../views/form.vue")
+                component: () => import( /* webpackChunkName: "form" */ "../views/estimate_detail_table.vue")
             }, {
                 path: "/permission",
                 name: "permission",

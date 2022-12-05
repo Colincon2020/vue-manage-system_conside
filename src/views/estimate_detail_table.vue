@@ -2,15 +2,8 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-input v-model="query.order_id" placeholder="見積書番号" class="handle-input mr10"></el-input>
-				<el-input v-model="query.subject_name" placeholder="件名" class="handle-input mr10"></el-input>
-				<el-input v-model="query.customer" placeholder="得意先" class="handle-input mr10"></el-input>
-				<el-date-picker v-model="query.estimate_date" type="date" placeholder="日付選択" class="handle-input mr10"
-					style="top:3px;margin-right:10px;"></el-date-picker>
-				<el-button type="primary" :icon="Search" @click="handleSearch">検索</el-button>
-				<el-button type="primary" :icon="Plus" @click="makeNewData('新規')">新規</el-button>
+				
 			</div>
-
 			<div class="pagination_top">
 				<el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
 					:page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
@@ -102,6 +95,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { Delete, Edit, Search, Plus } from "@element-plus/icons-vue";
 import { fetchData } from "../api/index";
 import { dataType } from "element-plus/es/components/table-v2/src/common";
+import { useRouter } from 'vue-router';
 
 interface TableItem {
 	order_id: string;
@@ -116,6 +110,8 @@ interface TableItem {
 	info: string;
 	estimate_detail: string[]
 }
+
+const route = useRouter();
 
 const query = reactive({
 	order_id: "",

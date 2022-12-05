@@ -101,7 +101,7 @@ import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Delete, Edit, Search, Plus } from "@element-plus/icons-vue";
 import { fetchData } from "../api/index";
-import { dataType } from "element-plus/es/components/table-v2/src/common";
+import { useRouter } from 'vue-router';
 
 interface TableItem {
 	order_id: string;
@@ -116,6 +116,8 @@ interface TableItem {
 	info: string;
 	estimate_detail: string[]
 }
+
+const route = useRouter();
 
 const query = reactive({
 	order_id: "",
@@ -232,8 +234,9 @@ const makeNewData = (type: string) => {
 	form.tax = 0;
 	form.amount = 0;
 	form.info = "";
-	
-	editVisible.value = true;
+	//editVisible.value = true;
+	route.push('/estimate_detail_table')
+
 }
 
 //新規データ保存
