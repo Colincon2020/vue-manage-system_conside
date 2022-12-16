@@ -6,3 +6,10 @@ export const fetchData = () => {
         method: 'get'
     });
 };
+
+export const fetchOrderId = () => {
+    return request({
+        url: './order_id.json',
+        method: 'get'
+    });
+}

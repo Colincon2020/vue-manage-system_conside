@@ -64,10 +64,12 @@
 					<el-input v-model="form.customer"></el-input>
 				</el-form-item>
 				<el-form-item label="見積日付">
-					<el-date-picker v-model="form.estimate_date" type="date" size="normal" placeholder="日付選択"></el-date-picker>				
+					<el-date-picker v-model="form.estimate_date" type="date" size="normal"
+						placeholder="日付選択"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="見積期限">
-					<el-date-picker v-model="form.estimate_deadline_date" type="date" size="normal" placeholder="日付選択"></el-date-picker>	
+					<el-date-picker v-model="form.estimate_deadline_date" type="date" size="normal"
+						placeholder="日付選択"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="支払条件">
 					<el-input v-model="form.payment_terms"></el-input>
@@ -103,7 +105,7 @@ import { Delete, Edit, Search, Plus } from "@element-plus/icons-vue";
 import { fetchData } from "../api/index";
 import { useRouter } from 'vue-router';
 
-interface TableItem {
+interface ITableItem {
 	order_id: string;
 	subject_name: string;
 	customer: string;
@@ -128,7 +130,7 @@ const query = reactive({
 	pageSize: 10,
 });
 
-const tableData = ref<TableItem[]>([]);
+const tableData = ref<ITableItem[]>([]);
 const pageTotal = ref(0);
 // 获取表格数据
 // データ獲得
@@ -235,8 +237,7 @@ const makeNewData = (type: string) => {
 	form.amount = 0;
 	form.info = "";
 	//editVisible.value = true;
-	route.push('/estimate_detail_table')
-
+	route.push('/estimate_detail_table_new');
 }
 
 //新規データ保存
@@ -255,7 +256,7 @@ const saveNewData = () => {
 			tax: form.tax,
 			amount: form.amount,
 			info: form.info,
-			estimate_detail:[]
+			estimate_detail: []
 		}
 	)
 }
