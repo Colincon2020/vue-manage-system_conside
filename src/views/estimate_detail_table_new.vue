@@ -36,6 +36,8 @@
 						<el-input v-model="form.info" type="textarea"></el-input>
 					</el-form-item>
 				</el-form>
+				<el-button type="primary" :icon="Plus" @click="makeNewData('新規')">詳細新規</el-button>
+
 			</div>
 			<el-table :data="tableData.estimate_detail" border class="table" ref="multipleTable"
 				header-cell-class-name="table-header">
@@ -46,7 +48,7 @@
 				<el-table-column prop="info" label="備考"></el-table-column>
 				<el-table-column label="操作" width="290" align="center">
 					<template #default="scope">
-						<el-button text :icon="Edit" @click="handleEdit('編集', scope.$index, scope.row)" v-permiss="15">
+						<el-button text :icon="Edit" @click="handleEdit('編集',scope.$index, scope.row)" v-permiss="15">
 							編集
 						</el-button>
 						<el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)" v-permiss="16">
@@ -55,6 +57,9 @@
 					</template>
 				</el-table-column>
 			</el-table>
+
+			<el-button type="primary" @click="saveNewData()" style="margin-top: 10px;">登録</el-button>
+
 		</div>
 
 		<!-- 编辑｜新增弹出框 -->
@@ -62,25 +67,26 @@
 		<el-dialog :title="dialog_type" v-model="editVisible" width="30%">
 			<el-form label-width="70px">
 				<el-form-item label="品名">
-					<el-input v-model="detailData.product_name"></el-input>
+					<el-input v-model="detailDataLinked.product_name"></el-input>
 				</el-form-item>
 				<el-form-item label="単価">
-					<el-input v-model="detailData.price"></el-input>
+					<el-input v-model="detailDataLinked.price"></el-input>
 				</el-form-item>
 				<el-form-item label="数量">
-					<el-input v-model="detailData.quantity"></el-input>
+					<el-input v-model="detailDataLinked.quantity"></el-input>
 				</el-form-item>
 				<el-form-item label="金額">
-					<el-input v-model="detailData.amount"></el-input>
+					<el-input v-model="detailDataLinked.amount"></el-input>
 				</el-form-item>
 				<el-form-item label="備考">
-					<el-input v-model="detailData.info"></el-input>
+					<el-input v-model="detailDataLinked.info"></el-input>
 				</el-form-item>
 			</el-form>
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="editVisible = false">キャンセル</el-button>
-					<el-button type="primary"  @click="saveDetail()">登録</el-button>
+					<el-button type="primary" v-if="dialog_type == '新規'" @click="saveDetail()">登録</el-button>
+					<el-button type="primary" v-else @click="saveEdit()">登録</el-button>
 				</span>
 			</template>
 		</el-dialog>
@@ -90,9 +96,10 @@
 <script setup lang="ts" name="basetable">
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { Delete, Edit } from "@element-plus/icons-vue";
+import { Delete, Edit, Plus } from "@element-plus/icons-vue";
 import { fetchOrderId } from "../api/index";
 import { useRouter, useRoute } from 'vue-router';
+import { de } from "element-plus/es/locale";
 
 interface TableItem {
 	order_id: string;
@@ -118,36 +125,37 @@ interface TableItemDetail {
 
 const route = useRoute();
 
-const detailData = ref<TableItemDetail>(
-	{
-		product_name: "",
-		price: 0,
-		quantity: 0,
-		amount: 0,
-		info: ""
-	}
-)
-const tableData = ref<TableItem>({
-	order_id: "",
-	subject_name: "",
-	customer: "",
-	estimate_date: "",
-	estimate_deadline_date: "",
-	payment_terms: "",
-	quotation_source: "",
-	tax: 0,
+const detailDataLinked = ref<TableItemDetail>({
+	product_name: "",
+	price: 0,
+	quantity: 0,
 	amount: 0,
-	info: "",
-	estimate_detail: [
-		{
-			product_name: "",
-			price: 0,
-			quantity: 0,
-			amount: 0,
-			info: ""
-		}
-	]
+	info: ""
+
+});
+
+let detailData: TableItemDetail = {
+	product_name: "",
+	price: 0,
+	quantity: 0,
+	amount: 0,
+	info: ""
 }
+
+const tableData = ref<TableItem>(
+	{
+		order_id: "",
+		subject_name: "",
+		customer: "",
+		estimate_date: "",
+		estimate_deadline_date: "",
+		payment_terms: "",
+		quotation_source: "",
+		tax: 0,
+		amount: 0,
+		info: "",
+		estimate_detail: []
+	}
 );
 
 // 获取表格数据
@@ -169,7 +177,7 @@ const handleDelete = (index: number) => {
 	})
 		.then(() => {
 			ElMessage.success("削除成功！");
-			tableData.value.splice(index, 1);
+			tableData.value.estimate_detail.splice(index, 1);
 		})
 		.catch(() => { });
 };
@@ -192,78 +200,65 @@ let form = reactive({
 	info: "",
 });
 
+//編集ボタン押下処理
 let idx: number = -1;
 const handleEdit = (type: string, index: number, row: any) => {
-	dialog_type.value = type
+	dialog_type.value = type;
 	idx = index;
-	form.order_id = row.order_id;
-	form.subject_name = row.subject_name;
-	form.customer = row.customer;
-	form.estimate_date = row.estimate_date;
-	form.estimate_deadline_date = row.estimate_deadline_date;
-	form.payment_terms = row.payment_terms;
-	form.quotation_source = row.quotation_source;
-	form.tax = row.tax;
-	form.amount = row.amount;
-	form.info = row.info;
+	detailDataLinked.value.amount = row.amount;
+	detailDataLinked.value.info = row.info;
+	detailDataLinked.value.price = row.price;
+	detailDataLinked.value.product_name = row.product_name;
+	detailDataLinked.value.quantity = row.quantity;
 	editVisible.value = true;
 };
 
+
+//新規詳細保存
+const saveDetail = () => {
+	editVisible.value = false;
+	tableData.value.estimate_detail.push(
+		{
+			product_name: detailDataLinked.value.product_name,
+			price: detailDataLinked.value.price,
+			quantity: detailDataLinked.value.quantity,
+			amount: detailDataLinked.value.amount,
+			info: detailDataLinked.value.info
+		}
+	);
+	ElMessage.success(`詳細は保存しました。`);
+};
+
+//詳細編集保存
 const saveEdit = () => {
 	editVisible.value = false;
-	ElMessage.success(`第 ${idx + 1} 行目修正成功`);
-	tableData.value[idx].order_id = form.order_id;
-	tableData.value[idx].subject_name = form.subject_name;
-	tableData.value[idx].customer = form.customer;
-	tableData.value[idx].estimate_date = form.estimate_date;
-	tableData.value[idx].estimate_deadline_date = form.estimate_deadline_date;
-	tableData.value[idx].payment_terms = form.payment_terms;
-	tableData.value[idx].order_id = form.order_id;
-	tableData.value[idx].subject_name = form.subject_name;
-	tableData.value[idx].quotation_source = form.quotation_source;
-	tableData.value[idx].tax = form.tax;
-	tableData.value[idx].amount = form.amount;
-	tableData.value[idx].info = form.info;
+	tableData.value.estimate_detail[idx].amount = detailDataLinked.value.amount;
+	tableData.value.estimate_detail[idx].info = detailDataLinked.value.info;
+	tableData.value.estimate_detail[idx].price = detailDataLinked.value.price;
+	tableData.value.estimate_detail[idx].product_name = detailDataLinked.value.product_name;
+	tableData.value.estimate_detail[idx].quantity = detailDataLinked.value.quantity;
+	ElMessage.success(`編集は保存しました。`);
 };
 
 // 增加新数据
 // 新規追加
 const makeNewData = (type: string) => {
-	dialog_type.value = type
-	form.order_id = "10009"; //バックエンドから取る予定
-	form.subject_name = "";
-	form.customer = "";
-	form.estimate_date = "";
-	form.estimate_deadline_date = "";
-	form.payment_terms = "";
-	form.quotation_source = "";
-	form.tax = 0;
-	form.amount = 0;
-	form.info = "";
-
+	dialog_type.value = type;
+	detailDataLinked.value.amount = 0;
+	detailDataLinked.value.info = "";
+	detailDataLinked.value.price = 0;
+	detailDataLinked.value.product_name = "";
+	detailDataLinked.value.quantity = 0;
 	editVisible.value = true;
-}
+};
+
+
 
 //新規データ保存
 //to_do:バックエンドにデータを送る
 const saveNewData = () => {
-	editVisible.value = false;
-	tableData.value.unshift(
-		{
-			order_id: form.order_id,
-			subject_name: form.subject_name,
-			customer: form.customer,
-			estimate_date: form.estimate_date,
-			estimate_deadline_date: form.estimate_deadline_date,
-			payment_terms: form.payment_terms,
-			quotation_source: form.quotation_source,
-			tax: form.tax,
-			amount: form.amount,
-			info: form.info,
-			estimate_detail: []
-		}
-	)
-}
+	ElMessage.success(`新規データ保存しました。`);
+};
 </script>
 
 <style scoped>
