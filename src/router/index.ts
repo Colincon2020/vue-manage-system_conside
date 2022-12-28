@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
                 path: "/estimate_detail_table_new",
                 name: "estimate_detail_table_new",
                 meta: {
-                    title: '見積詳細・新規',
+                    title: '見積新規',
                     permiss: '3'
                 },
                 component: () => import( /* webpackChunkName: "form" */ "../views/estimate_detail_table_new.vue")

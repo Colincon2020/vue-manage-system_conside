@@ -11,7 +11,15 @@
             "tax": 0.1,
             "amount": 100,
             "info":"要注意",
-            "estimate_detail": []
+            "estimate_detail": [
+                {
+                    "product_name": "10001_SD",
+                    "price": 100,
+                    "quantity": 2,
+                    "amount": 25,
+                    "info": "DEF"
+                }
+            ]
         },
         {
             "order_id": 10002,
@@ -24,7 +32,15 @@
             "tax": 0.1,
             "amount": 100,
             "info":"要注意",
-            "estimate_detail": []
+            "estimate_detail":  [
+                {
+                    "product_name": "SD",
+                    "price": 100,
+                    "quantity": 2,
+                    "amount": 25,
+                    "info": "DEF"
+                }
+            ]
         },
         {
             "order_id": 10003,
@@ -37,7 +53,15 @@
             "tax": 0.1,
             "amount": 100,
             "info":"要注意",
-            "estimate_detail": []
+            "estimate_detail":  [
+                {
+                    "product_name": "10002_SD",
+                    "price": 100,
+                    "quantity": 2,
+                    "amount": 25,
+                    "info": "DEF"
+                }
+            ]
         },
         {
             "order_id": 10004,
@@ -50,7 +74,15 @@
             "tax": 0.1,
             "amount": 100,
             "info":"要注意",
-            "estimate_detail": []
+            "estimate_detail":  [
+                {
+                    "product_name": "10002_SD",
+                    "price": 100,
+                    "quantity": 2,
+                    "amount": 25,
+                    "info": "DEF"
+                }
+            ]
         }
     ],
     "pageTotal": 4
